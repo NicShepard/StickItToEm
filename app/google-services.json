@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "632810784389",
+    "firebase_url": "https://stickittoem-176f1-default-rtdb.firebaseio.com",
+    "project_id": "stickittoem-176f1",
+    "storage_bucket": "stickittoem-176f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632810784389:android:e0cd00b992b4073ee98bec",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourseworkupteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632810784389-0ubndopcohjb6k2u27nmi7k8ku14vqn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEYOtXrvalTXDzeD7KHzwHiKA61HTZ_NQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632810784389-0ubndopcohjb6k2u27nmi7k8ku14vqn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632810784389:android:f4180168daac5f5be98bec",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourseworkupteam.stickittoem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632810784389-0ubndopcohjb6k2u27nmi7k8ku14vqn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEYOtXrvalTXDzeD7KHzwHiKA61HTZ_NQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632810784389-0ubndopcohjb6k2u27nmi7k8ku14vqn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
