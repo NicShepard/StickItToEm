@@ -13,9 +13,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RealTimeDatabaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = RealTimeDatabaseActivity.class.getSimpleName();
+    // private static final String TAG = RealTimeDatabaseActivity.class.getSimpleName();
 
-    private DatabaseReference database;
+    //private DatabaseReference database;
     private Button submit;
     private EditText username;
     private TextView test;
@@ -25,9 +25,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_time_database);
 
-        username = (EditText) findViewById(R.id.userName);
-        submit - (Button) findViewById(R.id.submit_button);
-        database = FirebaseDatabase.getInstance().getReference();
+        //username = (EditText) findViewById(R.id.userName);
+        submit = (Button) findViewById(R.id.submit_button2);
+        //database = FirebaseDatabase.getInstance().getReference();
         test = (TextView) findViewById(R.id.test);
 
         submit.setOnClickListener(this::onClick);
@@ -36,8 +36,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.submit_button:
+            case R.id.submit_button2:
                 // create new user in database
+                //database.child("Users").child("Test").setValue(test.getText().toString());
                 break;
         }
     }
