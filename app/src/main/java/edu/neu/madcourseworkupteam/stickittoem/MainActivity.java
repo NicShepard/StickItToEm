@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Flow:
@@ -27,28 +29,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
  */
 
 
-public class MainActivity extends AppCompatActivity {
-
-
-    String token;
-    MessagingService messagingService;
-=======
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String SERVER_KEY = "AAAAk1Z2RoU:APA91bHx5coormb5Qv_SeCRUTUpcV9Dz1jAt7HY7pV1gMy8kWdpdRfYDNWy1P_mHVOh6jV11iftmrmaFQHFT2amr0eOIC1VYu2kXtTTml5P78c2LNWGB3GZBSYluqZ_f1gZSKRhsKCTt";
-
+    String token;
+    MessagingService messagingService;
     private EditText username;
     private Button go_button;
->>>>>>> RTDB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
 
         this.messagingService = new MessagingService();
 
@@ -58,19 +50,19 @@ public class MainActivity extends AppCompatActivity {
                 token = instanceIdResult.getToken();
                 Log.e("Token", token);
                 Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-=======
-        setContentView(R.layout.activity_main);
+                setContentView(R.layout.activity_main);
 
-        go_button = (Button) findViewById(R.id.RTDB);
-        username = (EditText) findViewById(R.id.UserName);
+                go_button = (Button) findViewById(R.id.RTDB);
+                username = (EditText) findViewById(R.id.UserName);
 
-        go_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Figure out how to carryover entered username to the RTDB activity
-                Intent intent = new Intent(getApplicationContext(), RealTimeDatabaseActivity.class);
-                startActivity(intent);
->>>>>>> RTDB
+                go_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Figure out how to carryover entered username to the RTDB activity
+                        Intent intent = new Intent(getApplicationContext(), RealTimeDatabaseActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
