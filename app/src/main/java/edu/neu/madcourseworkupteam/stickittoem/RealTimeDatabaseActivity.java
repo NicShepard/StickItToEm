@@ -15,7 +15,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
     // private static final String TAG = RealTimeDatabaseActivity.class.getSimpleName();
 
-    //private DatabaseReference database;
+    private DatabaseReference database;
     private Button submit;
     private EditText username;
     private TextView test;
@@ -27,7 +27,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         //username = (EditText) findViewById(R.id.userName);
         submit = (Button) findViewById(R.id.submit_button2);
-        //database = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference();
         test = (TextView) findViewById(R.id.test);
 
         submit.setOnClickListener(this::onClick);
