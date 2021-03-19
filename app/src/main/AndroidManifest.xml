@@ -11,6 +11,7 @@
         android:theme="@style/Theme.StickItToEm">
         <activity android:name=".EmojiView"></activity>
         <activity android:name=".LoginView" />
+        <activity android:name=".RealTimeDatabaseActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
