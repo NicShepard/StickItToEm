@@ -116,17 +116,40 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 }
         );
 
+        // Either add new user if the username entered is not in the database
+        // or update device token if different than the one stored with the
+        // username in the database
+        // or do nothing
+        String token = "";
+        try {
+            token = FirebaseInstanceId.getInstance().getToken();
+            Log.w("RECEIVED Token: ", token);
+            // for username, get what the user typed in from the login
+            // instead of score, should be the device id/token
+            User user = new User("user2", "2", token);
+            database.child("users").child(user.username).setValue(user);
+
+        } catch (Exception e) {
+            Log.d("Failed to complete token refresh", String.valueOf(e));
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.add5:
-                RealTimeDatabaseActivity.this.onAddScore(database, player1.isChecked() ? "user1" : "user2");
+                //RealTimeDatabaseActivity.this.onAddScore(database, player1.isChecked() ? "user1" : "user2");
+                RealTimeDatabaseActivity.this.onAddScore(database, "user2");
+
                 break;
         }
     }
 
+    /**
+     *
+     * @param postRef
+     * @param user
+     */
     private void onAddScore(DatabaseReference postRef, String user) {
         postRef
                 .child("users")
