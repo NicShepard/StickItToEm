@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,10 +20,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.ArrayList;
 
 //TODO: Figure out how to get username from login
 // when click login button, should take to this activity
@@ -42,10 +35,12 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private DatabaseReference database;
     private TextView userName;
     private TextView score;
-    private TextView userName2;
-    private TextView score2;
     private RadioButton player1;
-    private Button add5;
+    private ImageButton starEmoji;
+    private ImageButton crossEmoji;
+    private ImageButton plusEmoji;
+    private ImageButton lockEmoji;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +48,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_real_time_database);
 
         userName = (TextView) findViewById(R.id.username);
-        userName2 = (TextView) findViewById(R.id.username2);
         score = (TextView) findViewById(R.id.score);
-        score2 = (TextView) findViewById(R.id.score2);
-
         player1 = (RadioButton) findViewById(R.id.player1);
 
         database = FirebaseDatabase.getInstance().getReference();
@@ -65,9 +57,15 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         //  if it is, read all the info from database and load it up
         //  otherwise write to database new user
 
-        add5 = (Button) findViewById(R.id.add5);
+        starEmoji = (ImageButton) findViewById(R.id.star);
+        crossEmoji = (ImageButton) findViewById(R.id.cross);
+        plusEmoji = (ImageButton) findViewById(R.id.plus);
+        lockEmoji = (ImageButton) findViewById(R.id.lock);
 
-        add5.setOnClickListener(this::onClick);
+        starEmoji.setOnClickListener(this::onClick);
+        crossEmoji.setOnClickListener(this::onClick);
+        plusEmoji.setOnClickListener(this::onClick);
+        lockEmoji.setOnClickListener(this::onClick);
 
         database.child("users").addChildEventListener(
                 new ChildEventListener() {
@@ -78,9 +76,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                         if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
                             score.setText(user.score);
                             userName.setText(user.username);
-                        } else {
-                            score2.setText(String.valueOf(user.score));
-                            userName2.setText(user.username);
                         }
                         Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue());
                     }
@@ -92,9 +87,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                         if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
                             score.setText(user.score);
                             userName.setText(user.username);
-                        } else {
-                            score2.setText(String.valueOf(user.score));
-                            userName2.setText(user.username);
                         }
                         Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
                     }
@@ -137,10 +129,25 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.add5:
-                //RealTimeDatabaseActivity.this.onAddScore(database, player1.isChecked() ? "user1" : "user2");
-                RealTimeDatabaseActivity.this.onAddScore(database, "user2");
-
+            // emoji 1
+            case R.id.star:
+                // TODO: figure out how to get current user id
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "star");
+                break;
+            // emoji 2
+            case R.id.cross:
+                // TODO: figure out how to get current user id
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "cross");
+                break;
+            // emoji 3
+            case R.id.plus:
+                // TODO: figure out how to get current user id
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "plus");
+                break;
+            // emoji 4
+            case R.id.lock:
+                // TODO: figure out how to get current user id
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "lock");
                 break;
         }
     }
@@ -148,12 +155,12 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      *
      * @param postRef
-     * @param user
+     * @param currentUser
      */
-    private void onAddScore(DatabaseReference postRef, String user) {
+    private void onSendEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji) {
         postRef
                 .child("users")
-                .child(user)
+                .child(currentUser)
                 .runTransaction(new Transaction.Handler() {
                     @NonNull
                     @Override
@@ -163,7 +170,10 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                             return Transaction.success(mutableData);
                         }
 
-                        u.score = String.valueOf(Integer.valueOf(u.score) + 5);
+                        // on button press, update sent child under current
+                        // user to include friend sent to and the emoji
+                        // TODO: get the friend username to fill for string user passed in
+                        u.sendEmoji(otherUser, emoji);
 
                         mutableData.setValue(u);
                         return Transaction.success(mutableData);
@@ -222,8 +232,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue(String.class);
                 Log.d(TAG, "OnDataChange Value is: " + value);
-                TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
-                text.setText(value);
+                //TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
+                //text.setText(value);
             }
 
             @Override

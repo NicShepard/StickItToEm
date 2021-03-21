@@ -33,11 +33,11 @@ public class User {
     }
 
     public void sendEmoji(String username, String emoji){
-        this.sent += username + ": " + emoji + ";";
+        this.sent += username + ":" + emoji + ";";
     }
 
     public void receiveEmoji(String username, String emoji){
-        this.received += username + ": " + emoji + ";";
+        this.received += username + ":" + emoji + ";";
     }
 }
 
