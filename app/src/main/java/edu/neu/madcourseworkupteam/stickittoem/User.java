@@ -1,10 +1,12 @@
 package edu.neu.madcourseworkupteam.stickittoem;
 
+import java.util.ArrayList;
+
 public class User {
 
     public String username;
     public String score;
-    public String datePlayed;
+    public String deviceToken;
 
     public User(){
         // Default constructor
@@ -17,12 +19,12 @@ public class User {
     public User(String username, String score){
         this.username = username;
         this.score = score;
-        this.datePlayed = "2021-03-19";
+        this.deviceToken = "";
     }
 
-    public User(String username, String score, String date) {
+    public User(String username, String score, String token) {
         this.username = username;
         this.score = score;
-        this.datePlayed = date;
+        this.deviceToken = token;
     }
 }

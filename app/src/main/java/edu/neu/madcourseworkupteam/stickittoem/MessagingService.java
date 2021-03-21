@@ -6,6 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.core.Tag;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -18,6 +25,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+
+import javax.net.ssl.KeyManager;
 
 public class MessagingService extends FirebaseMessagingService {
 
@@ -49,7 +58,21 @@ public class MessagingService extends FirebaseMessagingService {
      * @return the key as a string
      */
     private String getKeyForUsername(String username){
-        return "Here's the key!";
+        String token = "";
+
+        return token;
+    }
+
+    @Override
+    public void onNewToken(String newToken) {
+        super.onNewToken(newToken);
+
+        Log.d("Refreshed token: ", newToken);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        // sendRegistrationToServer(refreshedToken);
     }
 
     /**

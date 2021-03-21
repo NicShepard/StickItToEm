@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +22,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
+
+//TODO: Figure out how to get username from login
+// when click login button, should take to this activity
+// and should have access to the username the user entered
+
+/**
+ *
+ */
 public class RealTimeDatabaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = RealTimeDatabaseActivity.class.getSimpleName();
@@ -46,6 +60,10 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         player1 = (RadioButton) findViewById(R.id.player1);
 
         database = FirebaseDatabase.getInstance().getReference();
+
+        // TODO: on create, check if username is already in database
+        //  if it is, read all the info from database and load it up
+        //  otherwise write to database new user
 
         add5 = (Button) findViewById(R.id.add5);
 
@@ -135,25 +153,52 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 });
     }
 
+    /**
+     *
+     * TODO: Use the device token value returned from getToken method to be added
+     * or updated with the corresponding username
+     * Should only need to update or add a single user, not 2
+     * @param view
+     */
     public void resetUsers(View view) {
-        User user = new User("user1", "0");
-        database.child("users").child(user.username).setValue(user);
+        String token = "";
+        try {
+            token = FirebaseInstanceId.getInstance().getToken();
+            Log.w("RECEIVED Token: ", token);
+            // for username, get what the user typed in from the login
+            // instead of score, should be the device id/token
+            User user = new User("user1", "0", token);
+            database.child("users").child(user.username).setValue(user);
 
-        User user2 = new User("user2", "0");
-        database.child("users").child(user2.username).setValue(user2);
+        } catch (Exception e) {
+            Log.d("Failed to complete token refresh", String.valueOf(e));
+        }
+
     }
 
+    /**
+     * Gets the device token
+     */
+    public void getToken() {
+
+    }
+
+
+    // Read and Write from/to database
     public void doAddDataToDb(View view) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference("message");
 
         ref.setValue("Hello World!");
 
+        // Reads from the database
         ref.addValueEventListener(new ValueEventListener() {
+            // triggered once the listener is attached and again every time the data changes
+            // including the children
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
+                Log.d(TAG, "OnDataChange Value is: " + value);
                 TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
                 text.setText(value);
             }
