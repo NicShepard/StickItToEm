@@ -22,7 +22,7 @@ import android.widget.EditText;
 /**
  * Flow:
  *
- * User logs in, their token is added to their username.
+ * User logs in, their firebase instance token is added to their username.
  * User types in a username and presses button to send token.
  * Make call to Firebase to get token, and send to that.
  * Give user big alert

@@ -10,6 +10,10 @@ public class User {
         // Default constructor
     }
 
+    public User(String username){
+        this.username = username;
+    }
+
     public User(String username, String score){
         this.username = username;
         this.score = score;
