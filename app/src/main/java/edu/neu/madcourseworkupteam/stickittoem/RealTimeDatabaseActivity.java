@@ -22,6 +22,8 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Date;
+
 //TODO: Figure out how to get username from login
 // when click login button, should take to this activity
 // and should have access to the username the user entered
@@ -88,7 +90,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        User user = dataSnapshot.getValue(User.class);
+//                        User user = dataSnapshot.getValue(User.class);
 
                         // if the key is current user?
                         /*
@@ -96,12 +98,12 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                             score.setText(user.score);
                             userName.setText(user.username);
                         }*/
-                        Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue());
+                        Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        User user = dataSnapshot.getValue(User.class);
+//                        User user = dataSnapshot.getValue(User.class);
 
                         // if the key is current user?
                         /*
@@ -169,28 +171,10 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         postRef
                 .child("users")
                 .child(currentUser)
-                .runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                        User u = mutableData.getValue(User.class);
-                        if (u == null) {
-                            return Transaction.success(mutableData);
-                        }
-
-                        // on button press, update sent child under current
-                        // user to include friend sent to and the emoji
-                        u.sendEmoji(otherUser, emoji);
-
-                        mutableData.setValue(u);
-                        return Transaction.success(mutableData);
-                    }
-
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
-                    }
-                });
+                .child("sent")
+                .child(otherUser)
+                .child(String.valueOf(new Date().getTime()))
+                .setValue(emoji);
     }
 
     /**
@@ -255,29 +239,29 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
 
-    // Read and Write from/to database
-    public void doAddDataToDb(View view) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference("message");
-
-        ref.setValue("Hello World!");
-
-        // Reads from the database
-        ref.addValueEventListener(new ValueEventListener() {
-            // triggered once the listener is attached and again every time the data changes
-            // including the children
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "OnDataChange Value is: " + value);
-                //TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
-                //text.setText(value);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
-            }
-        });
-    }
+//    // Read and Write from/to database
+//    public void doAddDataToDb(View view) {
+//        FirebaseDatabase db = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = db.getReference("message");
+//
+//        ref.setValue("Hello World!");
+//
+//        // Reads from the database
+//        ref.addValueEventListener(new ValueEventListener() {
+//            // triggered once the listener is attached and again every time the data changes
+//            // including the children
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "OnDataChange Value is: " + value);
+//                //TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
+//                //text.setText(value);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.w(TAG, "Failed to read value.", databaseError.toException());
+//            }
+//        });
+//    }
 }
