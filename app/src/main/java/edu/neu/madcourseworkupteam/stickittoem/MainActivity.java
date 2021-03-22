@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,12 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
                 go_button = (Button) findViewById(R.id.RTDB);
                 username = (EditText) findViewById(R.id.UserName);
+                TextView currentUser = findViewById(R.id.UserName);
 
                 go_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO: Figure out how to carryover entered username to the RTDB activity
                         Intent intent = new Intent(getApplicationContext(), RealTimeDatabaseActivity.class);
+                        intent.putExtra("CURRENT_USER", currentUser.getText().toString());
                         startActivity(intent);
                     }
                 });

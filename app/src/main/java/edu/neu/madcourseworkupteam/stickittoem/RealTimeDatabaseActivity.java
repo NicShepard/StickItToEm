@@ -54,10 +54,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         database = FirebaseDatabase.getInstance().getReference();
 
-        // TODO: on create, check if username is already in database
-        //  if it is, read all the info from database and load it up
-        //  otherwise write to database new user
-
         starEmoji = (ImageButton) findViewById(R.id.star);
         crossEmoji = (ImageButton) findViewById(R.id.cross);
         plusEmoji = (ImageButton) findViewById(R.id.plus);
@@ -76,11 +72,10 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         try {
             token = FirebaseInstanceId.getInstance().getToken();
             Log.w("RECEIVED Token: ", token);
-            // for username, get what the user typed in from the login
-            // instead of score, should be the device id/token
-            userName.setText("nberg"); ;
+            Log.w("CURRENT USER: ", getIntent().getStringExtra("CURRENT_USER"));
+            userName.setText(getIntent().getStringExtra("CURRENT_USER"));
             User user = new User(userName.getText().toString(), token);
-            database.child("users").child(user.username).setValue(user);
+            database.child("users").child(user.username).child("deviceToken").setValue(user);
 
         } catch (Exception e) {
             Log.d("Failed to complete token refresh", String.valueOf(e));
@@ -90,38 +85,20 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        User user = dataSnapshot.getValue(User.class);
-
-                        // if the key is current user?
-                        /*
-                        if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
-                            score.setText(user.score);
-                            userName.setText(user.username);
-                        }*/
                         Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue().toString());
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                        User user = dataSnapshot.getValue(User.class);
-
-                        // if the key is current user?
-                        /*
-                        if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
-                            score.setText(user.score);
-                            userName.setText(user.username);
-                        }*/
                         Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
                     }
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                     }
 
                     @Override
@@ -223,30 +200,4 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         return token[0];
     }
 
-
-//    // Read and Write from/to database
-//    public void doAddDataToDb(View view) {
-//        FirebaseDatabase db = FirebaseDatabase.getInstance();
-//        DatabaseReference ref = db.getReference("message");
-//
-//        ref.setValue("Hello World!");
-//
-//        // Reads from the database
-//        ref.addValueEventListener(new ValueEventListener() {
-//            // triggered once the listener is attached and again every time the data changes
-//            // including the children
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "OnDataChange Value is: " + value);
-//                //TextView text = (TextView) findViewById(R.id.dataUpdateTextView);
-//                //text.setText(value);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.w(TAG, "Failed to read value.", databaseError.toException());
-//            }
-//        });
-//    }
 }
