@@ -3,7 +3,6 @@ package edu.neu.madcourseworkupteam.stickittoem;
 public class User {
 
     public String username;
-    public String score;
     public String deviceToken;
     public String sent;
     public String received;
@@ -16,17 +15,8 @@ public class User {
         this.username = username;
     }
 
-    public User(String username, String score){
+    public User(String username, String token) {
         this.username = username;
-        this.score = score;
-        this.deviceToken = "";
-        this.sent = "";
-        this.received = "";
-    }
-
-    public User(String username, String score, String token) {
-        this.username = username;
-        this.score = score;
         this.deviceToken = token;
         this.sent = "";
         this.received = "";

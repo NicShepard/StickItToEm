@@ -36,8 +36,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private DatabaseReference database;
     private TextView userName;
     private EditText sendToFriend;
-    private TextView score;
-    private RadioButton player1;
     private ImageButton starEmoji;
     private ImageButton crossEmoji;
     private ImageButton plusEmoji;
@@ -51,8 +49,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         userName = (TextView) findViewById(R.id.username);
         sendToFriend = (EditText) findViewById(R.id.sendToUser);
-        score = (TextView) findViewById(R.id.score);
-        player1 = (RadioButton) findViewById(R.id.player1);
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -70,16 +66,36 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         plusEmoji.setOnClickListener(this::onClick);
         lockEmoji.setOnClickListener(this::onClick);
 
+        // Either add new user if the username entered is not in the database
+        // or update device token if different than the one stored with the
+        // username in the database
+        // or do nothing
+        String token = "";
+        try {
+            token = FirebaseInstanceId.getInstance().getToken();
+            Log.w("RECEIVED Token: ", token);
+            // for username, get what the user typed in from the login
+            // instead of score, should be the device id/token
+            userName.setText("nberg"); ;
+            User user = new User(userName.getText().toString(), token);
+            database.child("users").child(user.username).setValue(user);
+
+        } catch (Exception e) {
+            Log.d("Failed to complete token refresh", String.valueOf(e));
+        }
+
         database.child("users").addChildEventListener(
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         User user = dataSnapshot.getValue(User.class);
 
+                        // if the key is current user?
+                        /*
                         if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
                             score.setText(user.score);
                             userName.setText(user.username);
-                        }
+                        }*/
                         Log.e(TAG, "onChildAdded: dataSnapshot = " + dataSnapshot.getValue());
                     }
 
@@ -87,10 +103,12 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         User user = dataSnapshot.getValue(User.class);
 
+                        // if the key is current user?
+                        /*
                         if (dataSnapshot.getKey().equalsIgnoreCase("user1")) {
                             score.setText(user.score);
                             userName.setText(user.username);
-                        }
+                        }*/
                         Log.v(TAG, "onChildChanged: " + dataSnapshot.getValue().toString());
                     }
 
@@ -110,23 +128,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                     }
                 }
         );
-
-        // Either add new user if the username entered is not in the database
-        // or update device token if different than the one stored with the
-        // username in the database
-        // or do nothing
-        String token = "";
-        try {
-            token = FirebaseInstanceId.getInstance().getToken();
-            Log.w("RECEIVED Token: ", token);
-            // for username, get what the user typed in from the login
-            // instead of score, should be the device id/token
-            User user = new User("user1", "2", token);
-            database.child("users").child(user.username).setValue(user);
-
-        } catch (Exception e) {
-            Log.d("Failed to complete token refresh", String.valueOf(e));
-        }
     }
 
     @Override
@@ -135,23 +136,26 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "star");
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, "user2", sendToFriend.getText().toString(), "star");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star");
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star");
                 break;
             // emoji 2
             case R.id.cross:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "cross");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross");
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross");
                 break;
             // emoji 3
             case R.id.plus:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "plus");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus");
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus");
                 break;
             // emoji 4
             case R.id.lock:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "lock");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock");
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock");
                 break;
         }
     }
@@ -176,7 +180,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
                         // on button press, update sent child under current
                         // user to include friend sent to and the emoji
-                        // TODO: get the friend username to fill for string user passed in
                         u.sendEmoji(otherUser, emoji);
 
                         mutableData.setValue(u);
@@ -210,7 +213,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
                         // on button press, update sent child under current
                         // user to include friend sent to and the emoji
-                        // TODO: get the friend username to fill for string user passed in
                         u.receiveEmoji(currentUser, emoji);
 
                         mutableData.setValue(u);
@@ -225,33 +227,31 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
-     * TODO: Use the device token value returned from getToken method to be added
-     * or updated with the corresponding username
-     * Should only need to update or add a single user, not 2
-     * @param view
-     */
-    public void resetUsers(View view) {
-        String token = "";
-        try {
-            token = FirebaseInstanceId.getInstance().getToken();
-            Log.w("RECEIVED Token: ", token);
-            // for username, get what the user typed in from the login
-            // instead of score, should be the device id/token
-            User user = new User("user1", "0", token);
-            database.child("users").child(user.username).setValue(user);
-
-        } catch (Exception e) {
-            Log.d("Failed to complete token refresh", String.valueOf(e));
-        }
-
-    }
-
-    /**
      * Gets the device token
      */
-    public void getToken() {
+    public String getToken(DatabaseReference postRef, String currentUser) {
+        final String[] token = {""};
+        postRef
+                .child("users")
+                .child(currentUser)
+                .runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        User u = mutableData.getValue(User.class);
+                        if (u == null) {
+                            return Transaction.success(mutableData);
+                        }
+                        token[0] = u.deviceToken;
+                        return Transaction.success(mutableData);
+                    }
 
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
+                    }
+                });
+        return token[0];
     }
 
 

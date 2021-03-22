@@ -63,8 +63,8 @@ public class RTDB {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User model = dataSnapshot.getValue(User.class);
-                    String tempstring = model.score;
-                    list.add(tempstring);
+                    //String tempstring = model.score;
+                    //list.add(tempstring);
                 }
             }
 
