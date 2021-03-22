@@ -134,30 +134,33 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View view) {
+
+        String timestamp = String.valueOf(new Date().getTime());
+
         switch(view.getId()) {
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star");
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp );
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
             case R.id.cross:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross");
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
                 break;
             // emoji 3
             case R.id.plus:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus");
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
                 break;
             // emoji 4
             case R.id.lock:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock");
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
                 break;
         }
     }
@@ -167,13 +170,13 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      * @param postRef
      * @param currentUser
      */
-    private void onSendEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji) {
+    private void onSendEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
         postRef
                 .child("users")
                 .child(currentUser)
                 .child("sent")
                 .child(otherUser)
-                .child(String.valueOf(new Date().getTime()))
+                .child(timestamp)
                 .setValue(emoji);
     }
 
@@ -182,32 +185,14 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      * @param postRef
      * @param currentUser
      */
-    private void onReceiveEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji) {
+    private void onReceiveEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
         postRef
                 .child("users")
                 .child(otherUser)
-                .runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                        User u = mutableData.getValue(User.class);
-                        if (u == null) {
-                            return Transaction.success(mutableData);
-                        }
-
-                        // on button press, update sent child under current
-                        // user to include friend sent to and the emoji
-                        u.receiveEmoji(currentUser, emoji);
-
-                        mutableData.setValue(u);
-                        return Transaction.success(mutableData);
-                    }
-
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
-                    }
-                });
+                .child("received")
+                .child(currentUser)
+                .child(timestamp)
+                .setValue(emoji);
     }
 
     /**
