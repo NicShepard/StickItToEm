@@ -11,13 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -107,6 +111,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                     }
                 }
         );
+
+
     }
 
     @Override
@@ -114,12 +120,13 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         String timestamp = String.valueOf(new Date().getTime());
 
-        switch(view.getId()) {
+        switch (view.getId()) {
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp );
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                getToken(database, "nic");
+//                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+//                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
             case R.id.cross:
@@ -143,12 +150,11 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
-     * @param postRef
+     * @param database
      * @param currentUser
      */
-    private void onSendEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
-        postRef
+    private void onSendEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+        database
                 .child("users")
                 .child(currentUser)
                 .child("sent")
@@ -158,12 +164,11 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
-     * @param postRef
+     * @param database
      * @param currentUser
      */
-    private void onReceiveEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
-        postRef
+    private void onReceiveEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+        database
                 .child("users")
                 .child(otherUser)
                 .child("received")
@@ -175,29 +180,24 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      * Gets the device token
      */
-    public String getToken(DatabaseReference postRef, String currentUser) {
-        final String[] token = {""};
-        postRef
-                .child("users")
-                .child(currentUser)
-                .runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                        User u = mutableData.getValue(User.class);
-                        if (u == null) {
-                            return Transaction.success(mutableData);
-                        }
-                        token[0] = u.deviceToken;
-                        return Transaction.success(mutableData);
-                    }
+    public String getToken(DatabaseReference database, String user) {
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
-                    }
-                });
+        final String[] token = new String[1];
+
+        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue().toString();
+                token[0] = value;
+                Log.d("TOKEN FROM FB", value);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Error while reading data");
+            }
+        });
+
         return token[0];
     }
-
 }
