@@ -75,7 +75,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             Log.w("CURRENT USER: ", getIntent().getStringExtra("CURRENT_USER"));
             userName.setText(getIntent().getStringExtra("CURRENT_USER"));
             User user = new User(userName.getText().toString(), token);
-            database.child("users").child(user.username).child("deviceToken").setValue(user);
+            database.child("users").child(user.username).child("deviceToken").setValue(token);
 
         } catch (Exception e) {
             Log.d("Failed to complete token refresh", String.valueOf(e));
