@@ -127,4 +127,17 @@
         app:layout_constraintVertical_bias="0.604"
         app:srcCompat="@android:drawable/ic_lock_lock" />
 
+    <EditText
+        android:id="@+id/sendToUser"
+        android:layout_width="284dp"
+        android:layout_height="53dp"
+        android:hint="Enter friend username"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.243" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

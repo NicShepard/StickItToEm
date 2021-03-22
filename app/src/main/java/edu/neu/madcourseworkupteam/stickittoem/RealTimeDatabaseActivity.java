@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
     private DatabaseReference database;
     private TextView userName;
+    private EditText sendToFriend;
     private TextView score;
     private RadioButton player1;
     private ImageButton starEmoji;
@@ -48,6 +50,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_real_time_database);
 
         userName = (TextView) findViewById(R.id.username);
+        sendToFriend = (EditText) findViewById(R.id.sendToUser);
         score = (TextView) findViewById(R.id.score);
         player1 = (RadioButton) findViewById(R.id.player1);
 
@@ -118,7 +121,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             Log.w("RECEIVED Token: ", token);
             // for username, get what the user typed in from the login
             // instead of score, should be the device id/token
-            User user = new User("user2", "2", token);
+            User user = new User("user1", "2", token);
             database.child("users").child(user.username).setValue(user);
 
         } catch (Exception e) {
@@ -132,22 +135,23 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "star");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "star");
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, "user2", sendToFriend.getText().toString(), "star");
                 break;
             // emoji 2
             case R.id.cross:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "cross");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "cross");
                 break;
             // emoji 3
             case R.id.plus:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "plus");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "plus");
                 break;
             // emoji 4
             case R.id.lock:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", "user1", "lock");
+                RealTimeDatabaseActivity.this.onSendEmoji(database, "user2", sendToFriend.getText().toString(), "lock");
                 break;
         }
     }
@@ -174,6 +178,40 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                         // user to include friend sent to and the emoji
                         // TODO: get the friend username to fill for string user passed in
                         u.sendEmoji(otherUser, emoji);
+
+                        mutableData.setValue(u);
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
+                    }
+                });
+    }
+
+    /**
+     *
+     * @param postRef
+     * @param currentUser
+     */
+    private void onReceiveEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji) {
+        postRef
+                .child("users")
+                .child(otherUser)
+                .runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        User u = mutableData.getValue(User.class);
+                        if (u == null) {
+                            return Transaction.success(mutableData);
+                        }
+
+                        // on button press, update sent child under current
+                        // user to include friend sent to and the emoji
+                        // TODO: get the friend username to fill for string user passed in
+                        u.receiveEmoji(currentUser, emoji);
 
                         mutableData.setValue(u);
                         return Transaction.success(mutableData);
