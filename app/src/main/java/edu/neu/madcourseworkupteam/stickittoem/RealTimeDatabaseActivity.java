@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
+import java.util.Map;
 
 //TODO: Figure out how to get username from login
 // when click login button, should take to this activity
@@ -176,20 +177,26 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 .child(timestamp)
                 .setValue(emoji);
     }
-
     /**
      * Gets the device token
      */
-    public String getToken(DatabaseReference database, String user) {
+    public void getToken(DatabaseReference database, String user) {
 
-        final String[] token = new String[1];
+        final String key = null;
 
-        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = database.child("users").child(user).orderByKey();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue().toString();
-                token[0] = value;
-                Log.d("TOKEN FROM FB", value);
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                   if(ds.child("deviceKey").getValue(String.class) != null) {
+                       Map<String, Object> map = (Map<String, Object>) ds.getValue();
+                       Log.e("TAG", map.toString());
+                   };
+                }
+//                User value = dataSnapshot.getValue(User.class);
             }
 
             @Override
@@ -197,7 +204,5 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 Log.e(TAG, "Error while reading data");
             }
         });
-
-        return token[0];
     }
 }

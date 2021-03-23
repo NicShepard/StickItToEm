@@ -1,11 +1,15 @@
 package edu.neu.madcourseworkupteam.stickittoem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class User {
 
     public String username;
     public String deviceToken;
-    public String sent;
-    public String received;
+    public HashMap<String, String> sent;
+    public HashMap<String, String> received;
 
     public User(){
         // Default constructor
@@ -18,16 +22,7 @@ public class User {
     public User(String username, String token) {
         this.username = username;
         this.deviceToken = token;
-        this.sent = "";
-        this.received = "";
     }
 
-    public void sendEmoji(String username, String emoji){
-        this.sent += username + ":" + emoji + ";";
-    }
-
-    public void receiveEmoji(String username, String emoji){
-        this.received += username + ":" + emoji + ";";
-    }
 }
 
