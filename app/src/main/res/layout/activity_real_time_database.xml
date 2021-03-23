@@ -73,6 +73,7 @@
         android:layout_height="53dp"
         android:hint="Enter friend username"
         android:textSize="25dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

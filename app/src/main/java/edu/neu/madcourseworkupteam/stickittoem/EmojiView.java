@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class EmojiView extends AppCompatActivity {
+
     private EditText findUser;
     private Button searchUser;
     private Button smile;
