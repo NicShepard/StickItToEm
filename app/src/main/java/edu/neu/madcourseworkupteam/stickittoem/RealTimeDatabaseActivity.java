@@ -178,22 +178,26 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 .child(timestamp)
                 .setValue(emoji);
     }
+
     /**
      * Gets the device token
      */
     public String getToken(DatabaseReference database, String user) {
 
         String cleanValue = null;
+        final String[] value = new String[1];
+        value[0] = null;
 
         Query query = database.child("users").child(user).orderByKey();
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue().toString();
-                if(value.contains("deviceToken=")){
-                    String[] values = value.split("deviceToken=");
-                    String cleanValue = values[1].replace("}","");
-                    Log.d("TOKEN FROM FB", cleanValue);
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("TOKEN FROM FB", snapshot.getKey());
+                    if (snapshot.getKey().equalsIgnoreCase("deviceToken")) {
+                        value[0] = snapshot.getValue().toString();
+                    }
                 }
             }
 
@@ -202,6 +206,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 Log.e(TAG, "Error while reading data");
             }
         });
-        return cleanValue;
+        return value[0];
     }
 }
