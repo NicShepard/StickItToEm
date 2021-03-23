@@ -26,7 +26,9 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 //TODO: Figure out how to get username from login
 // when click login button, should take to this activity
@@ -179,14 +181,20 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      * Gets the device token
      */
-    public void getToken(DatabaseReference database, String user) {
+    public String getToken(DatabaseReference database, String user) {
+
+        String cleanValue = null;
 
         Query query = database.child("users").child(user).orderByKey();
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.getValue().toString();
-                Log.d("TOKEN FROM FB", value);
+                if(value.contains("deviceToken=")){
+                    String[] values = value.split("deviceToken=");
+                    String cleanValue = values[1].replace("}","");
+                    Log.d("TOKEN FROM FB", cleanValue);
+                }
             }
 
             @Override
@@ -194,5 +202,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 Log.e(TAG, "Error while reading data");
             }
         });
+        return cleanValue;
     }
 }
