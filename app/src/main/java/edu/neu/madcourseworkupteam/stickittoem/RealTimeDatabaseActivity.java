@@ -114,11 +114,11 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         String timestamp = String.valueOf(new Date().getTime());
 
-        switch(view.getId()) {
+        switch (view.getId()) {
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp );
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
@@ -143,7 +143,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
      * @param postRef
      * @param currentUser
      */
@@ -158,7 +157,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     }
 
     /**
-     *
      * @param postRef
      * @param currentUser
      */

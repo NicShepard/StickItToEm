@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StickItToEm">
-        <activity android:name=".EmojiView"></activity>
+        <activity
+            android:name=".ReceivedActivity"
+            android:label="@string/title_activity_received"
+            android:theme="@style/Theme.StickItToEm.NoActionBar"></activity>
+<!--        <activity-->
+<!--            android:name=".SentHistoryActivity"-->
+<!--            android:label="@string/title_activity_sent_history"-->
+<!--            android:theme="@style/Theme.StickItToEm.NoActionBar" />-->
+        <activity android:name=".EmojiView" />
         <activity android:name=".RealTimeDatabaseActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -18,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".MessagingService"
             android:exported="false">
