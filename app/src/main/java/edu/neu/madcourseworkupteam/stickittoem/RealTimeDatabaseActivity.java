@@ -126,9 +126,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             // emoji 1
             case R.id.star:
                 // TODO: figure out how to get current user id
-                getToken(database, "nic");
-//                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
-//                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
             case R.id.cross:
@@ -156,6 +155,14 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      * @param currentUser
      */
     private void onSendEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+        String token = getToken(database, otherUser);
+
+        if(token != null){
+            Log.d("TOKEN", token);
+        } else {
+            Log.d("TOKEN", "NULL TOKEN");
+        }
+
         database
                 .child("users")
                 .child(currentUser)
@@ -170,6 +177,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      * @param currentUser
      */
     private void onReceiveEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+
         database
                 .child("users")
                 .child(otherUser)
@@ -184,7 +192,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      */
     public String getToken(DatabaseReference database, String user) {
 
-        String cleanValue = null;
         final String[] value = new String[1];
         value[0] = null;
 
@@ -206,6 +213,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 Log.e(TAG, "Error while reading data");
             }
         });
+
         return value[0];
     }
+
+
 }
