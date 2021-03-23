@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
-import java.util.Map;
 
 //TODO: Figure out how to get username from login
 // when click login button, should take to this activity
@@ -182,21 +181,12 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
      */
     public void getToken(DatabaseReference database, String user) {
 
-        final String key = null;
-
         Query query = database.child("users").child(user).orderByKey();
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                   if(ds.child("deviceKey").getValue(String.class) != null) {
-                       Map<String, Object> map = (Map<String, Object>) ds.getValue();
-                       Log.e("TAG", map.toString());
-                   };
-                }
-//                User value = dataSnapshot.getValue(User.class);
+                String value = dataSnapshot.getValue().toString();
+                Log.d("TOKEN FROM FB", value);
             }
 
             @Override
