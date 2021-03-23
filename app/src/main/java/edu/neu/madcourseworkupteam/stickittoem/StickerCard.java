@@ -1,13 +1,13 @@
 package edu.neu.madcourseworkupteam.stickittoem;
 
 public class StickerCard {
-    private String imageSource;
+    private int imageSource;
 
-    public StickerCard(String stickerID) {
+    public StickerCard(int stickerID) {
         this.imageSource = stickerID;
     }
 
-    public String getImageSource() {
+    public int getImageSource() {
         return imageSource;
     }
 

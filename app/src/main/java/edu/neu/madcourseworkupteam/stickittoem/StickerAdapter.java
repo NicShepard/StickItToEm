@@ -1,6 +1,8 @@
 package edu.neu.madcourseworkupteam.stickittoem;
 
 
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,16 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder> {
     @NonNull
     @Override
     public StickerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent,
+                false);
+        return new StickerViewHolder(view);
+        //return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull StickerViewHolder holder, int position) {
+        StickerCard currentCard = stickerList.get(position);
+        holder.sticker.setImageResource(currentCard.getImageSource());
 
     }
 
