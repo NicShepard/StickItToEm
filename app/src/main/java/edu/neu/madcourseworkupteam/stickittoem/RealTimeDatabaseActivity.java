@@ -133,7 +133,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         switch (view.getId()) {
             // emoji 1
             case R.id.star:
-                getEmojisForUser(database, currentUser);
                 RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
@@ -155,10 +154,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         }
     }
 
-    /**
-     * @param database
-     * @param currentUser
-     */
+
     private void onSendEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
 
         String token = getToken(database, otherUser);
@@ -171,10 +167,6 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 .setValue(emoji);
     }
 
-    /**
-     * @param database
-     * @param currentUser
-     */
     private void onReceiveEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
 
         database
