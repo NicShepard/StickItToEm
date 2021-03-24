@@ -40,7 +40,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private String currentUser;
     private DatabaseReference database;
     private TextView userName;
+    private TextView userEmojis;
     private EditText sendToFriend;
+    private String otherUser = "otherUser";
     private ImageView smileEmoji;
     private ImageView sadEmoji;
     private ImageView laughEmoji;
@@ -57,14 +59,15 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_real_time_database);
 
         userName = (TextView) findViewById(R.id.username);
-        sendToFriend = (EditText) findViewById(R.id.sendToUser);
+        userEmojis = (TextView) findViewById(R.id.emojisSent);
 
         database = FirebaseDatabase.getInstance().getReference();
 
         smileEmoji = (ImageView) findViewById(R.id.smiley);
         sadEmoji = (ImageView) findViewById(R.id.sad);
-        laughEmoji = (ImageView) findViewById(R.id.plus);
-        angryEmoji = (ImageView) findViewById(R.id.lock);
+        laughEmoji = (ImageView) findViewById(R.id.laughing);
+        angryEmoji = (ImageView) findViewById(R.id.angry);
+        sendToFriend = (EditText) findViewById(R.id.sendToUser);
 
         smileEmoji.setOnClickListener(this::onClick);
         sadEmoji.setOnClickListener(this::onClick);
@@ -136,7 +139,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         switch (view.getId()) {
             case R.id.received:
-                startActivity(new Intent(getApplicationContext(), ReceivedActivity.class));
+                Intent intent = new Intent(getApplicationContext(), ReceivedActivity.class);
+                intent.putExtra("CURRENT_USER", userName.getText().toString());
+                startActivity(intent);
                 break;
             // emoji 1
 
@@ -164,6 +169,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "angry", timestamp);
                 break;
         }
+        int num = getEmojisForUser(database, currentUser);
+        userEmojis.setText("Emojis Sent: " + num);
     }
 
 
@@ -223,7 +230,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      * Get the emojis for a user
      */
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
+    public int getEmojisForUser(DatabaseReference database, String user) {
 
         List emojiList = new LinkedList();
 
@@ -233,7 +240,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
+                    if (snapshot.getKey().equalsIgnoreCase("sent")) {
                         for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
                             if (snapshot.getKey() != null) {
                                 for (DataSnapshot message : receivedMessageUser.getChildren()) {
@@ -252,7 +259,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             }
         });
 
-        return emojiList;
+        return emojiList.size();
     }
 
 
