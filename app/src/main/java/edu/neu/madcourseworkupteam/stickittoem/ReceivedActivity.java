@@ -47,20 +47,11 @@ public class ReceivedActivity extends AppCompatActivity {
         currentUser = getIntent().getStringExtra("CURRENT_USER");
         createRecyclerView();
 
-        List<String> emojis = getEmojisForUser(database, currentUser);
-
-        for(String each : emojis) {
-            if (each.equalsIgnoreCase("smiley")) {
-                cardList.add(new StickerCard(R.drawable.smiley_face));
-            } else if (each == "laughing") {
-                cardList.add(new StickerCard(R.drawable.laughing_face));
-            } else if (each == "angry") {
-                cardList.add(new StickerCard(R.drawable.angry_face));
-            } else if (each == "sad") {
-                cardList.add(new StickerCard(R.drawable.sad_face));
-            }
+        try {
+            initialItemData(savedInstanceState);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-
 
         //FloatingActionButton fab = findViewById(R.id.fab);
         //fab.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +69,21 @@ public class ReceivedActivity extends AppCompatActivity {
             if (cardList == null || cardList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
+//                List<String> emojis = getEmojisForUser(database, currentUser);
+//                Log.d("emojis size:", String.valueOf(emojis.size()));
+//
+//                for(String each : emojis) {
+//                    if (each == "smiley") {
+//                        cardList.add(new StickerCard(R.drawable.smiley_face));
+//                    } else if (each == "laughing") {
+//                        cardList.add(new StickerCard(R.drawable.laughing_face));
+//                    } else if (each == "angry") {
+//                        cardList.add(new StickerCard(R.drawable.angry_face));
+//                    } else if (each == "sad") {
+//                        cardList.add(new StickerCard(R.drawable.sad_face));
+//                    }
+//                }
+//                size = emojis.size();
                 for (int i = 0; i < size; i++) {
                     Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
                     StickerCard sCard = new StickerCard(1);
@@ -87,12 +93,8 @@ public class ReceivedActivity extends AppCompatActivity {
         }
         // Load the initial cards
         else {
-            StickerCard item1 = new StickerCard(R.drawable.smiley_face);
-            StickerCard item2 = new StickerCard(R.drawable.laughing_face);
-            //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
-            cardList.add(item1);
-            cardList.add(item2);
             List<String> emojis = getEmojisForUser(database, currentUser);
+            Log.d("emojis size:", String.valueOf(emojis.size()));
 
             for(String each : emojis) {
                 if (each == "smiley") {
@@ -105,6 +107,14 @@ public class ReceivedActivity extends AppCompatActivity {
                     cardList.add(new StickerCard(R.drawable.sad_face));
                 }
             }
+
+            StickerCard item1 = new StickerCard(R.drawable.smiley_face);
+            StickerCard item2 = new StickerCard(R.drawable.laughing_face);
+            //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
+            cardList.add(item1);
+            cardList.add(item2);
+
+
         }
     }
 

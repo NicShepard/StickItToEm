@@ -40,6 +40,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private String currentUser;
     private DatabaseReference database;
     private TextView userName;
+    private TextView userEmojis;
     private EditText sendToFriend;
     private String otherUser = "otherUser";
     private ImageView smileEmoji;
@@ -58,6 +59,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_real_time_database);
 
         userName = (TextView) findViewById(R.id.username);
+        userEmojis = (TextView) findViewById(R.id.emojisSent);
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -167,6 +169,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "angry", timestamp);
                 break;
         }
+        int num = getEmojisForUser(database, currentUser);
+        userEmojis.setText("Emojis Sent: " + num);
     }
 
 
@@ -226,7 +230,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      * Get the emojis for a user
      */
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
+    public int getEmojisForUser(DatabaseReference database, String user) {
 
         List emojiList = new LinkedList();
 
@@ -236,7 +240,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
+                    if (snapshot.getKey().equalsIgnoreCase("sent")) {
                         for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
                             if (snapshot.getKey() != null) {
                                 for (DataSnapshot message : receivedMessageUser.getChildren()) {
@@ -255,7 +259,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             }
         });
 
-        return emojiList;
+        return emojiList.size();
     }
 
 
