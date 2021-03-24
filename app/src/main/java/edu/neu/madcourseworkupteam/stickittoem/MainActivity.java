@@ -16,47 +16,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 /**
- * Flow:
- *
- * User logs in, their firebase instance token is added to their username.
- * User types in a username and presses button to send token.
- * Make call to Firebase to get token, and send to that.
- * Give user big alert
+ * Our MainActivity is where users log in. A toast displays their device key
+ * in case it can be helpful for debugging.
  */
-
-
-
 public class MainActivity extends AppCompatActivity {
 
-    private static final String SERVER_KEY = "AAAAk1Z2RoU:APA91bHx5coormb5Qv_SeCRUTUpcV9Dz1jAt7HY7pV1gMy8kWdpdRfYDNWy1P_mHVOh6jV11iftmrmaFQHFT2amr0eOIC1VYu2kXtTTml5P78c2LNWGB3GZBSYluqZ_f1gZSKRhsKCTt";
     String token;
-    MessagingService messagingService;
-    private EditText username;
     private Button go_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.messagingService = new MessagingService();
-
+        //Get the token and log it for debugging
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-                token = instanceIdResult.getToken();
-                Log.e("Token", token);
-                Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                 setContentView(R.layout.activity_main);
 
+                //Get token
+                token = instanceIdResult.getToken();
+                Log.d("Token", token);
+
+                //Get views
                 go_button = (Button) findViewById(R.id.RTDB);
-                username = (EditText) findViewById(R.id.UserName);
                 TextView currentUser = findViewById(R.id.UserName);
 
+                //Carry the name of the user into the second screen
                 go_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

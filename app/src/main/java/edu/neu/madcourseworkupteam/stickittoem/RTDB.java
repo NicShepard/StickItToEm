@@ -27,7 +27,6 @@ public class RTDB {
         database = FirebaseDatabase.getInstance().getReference().child("users");
         user = new User(userName);
         token = "";
-
     }
 
     public String getToken() {

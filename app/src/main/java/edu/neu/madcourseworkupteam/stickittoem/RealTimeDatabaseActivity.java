@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -19,24 +20,24 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
-
-//TODO: Figure out how to get username from login
-// when click login button, should take to this activity
-// and should have access to the username the user entered
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- *
+ * This class is where the user sends emojis to a single friend. The architecture, and our design, supports sending
+ * notifications to many different friends, but due to time constraints and question @200 on Piazza.
+ * We decided to make it just one friend while leaving the elements to show the work that was done.
  */
 public class RealTimeDatabaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = RealTimeDatabaseActivity.class.getSimpleName();
+    private static final String TAG = "RTDB ACTIVITY";
 
+    private String currentUser;
     private DatabaseReference database;
     private TextView userName;
     private EditText sendToFriend;
@@ -45,7 +46,11 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private ImageView laughEmoji;
     private ImageView angryEmoji;
 
-
+    /**
+     * Find all the views by their ID, get the device token for the user, and save it under their
+     * userID in RTDB. For the purposes of this assignment, we have foregone a synthetic primary key
+     * and made the design decision that users are not able to change their username.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,22 +71,28 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         laughEmoji.setOnClickListener(this::onClick);
         angryEmoji.setOnClickListener(this::onClick);
 
-        // Either add new user if the username entered is not in the database
-        // or update device token if different than the one stored with the
-        // username in the database
-        // or do nothing
+        //We originally made this adjustable, but we'll hardcode it for now.
+        sendToFriend.setText("otherUser");
+
         String token = "";
         try {
+            //Get current user's token
             token = FirebaseInstanceId.getInstance().getToken();
             Log.w("RECEIVED Token: ", token);
-            Log.w("CURRENT USER: ", getIntent().getStringExtra("CURRENT_USER"));
-            userName.setText(getIntent().getStringExtra("CURRENT_USER"));
-            User user = new User(userName.getText().toString(), token);
-            database.child("users").child(user.username).child("deviceToken").setValue(user);
+
+            //Get current user's name and set it
+            currentUser = getIntent().getStringExtra("CURRENT_USER");
+            userName.setText(currentUser);
+            Log.w("CURRENT USER: ", currentUser);
+
+            //Set the token as a child for the current user so other users can eventually look them
+            // up and ping them in another iteration of the app
+            database.child("users").child(currentUser).child("deviceToken").setValue(token);
 
         } catch (Exception e) {
             Log.d("Failed to complete token refresh", String.valueOf(e));
         }
+
 
         database.child("users").addChildEventListener(
                 new ChildEventListener() {
@@ -111,9 +122,16 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         );
     }
 
+    /**
+     * Define the onClick method that all the emoji buttons will use. It calls onSendEmoji
+     * and onReceiveEmoji which populate entries or users of all the messages they sent, all the
+     * messages they received, and the timestamp of the message (to be used later as a composite
+     * primary key)
+     */
     @Override
     public void onClick(View view) {
 
+        //Get a timestamp to use to identify each message
         String timestamp = String.valueOf(new Date().getTime());
 
         switch (view.getId()) {
@@ -121,6 +139,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 startActivity(new Intent(getApplicationContext(), ReceivedActivity.class));
                 break;
             // emoji 1
+
             case R.id.smiley:
                 // TODO: figure out how to get current user id
                 RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "smiley", timestamp);
@@ -147,12 +166,11 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         }
     }
 
-    /**
-     * @param postRef
-     * @param currentUser
-     */
-    private void onSendEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
-        postRef
+
+    private void onSendEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+
+        String token = getToken(database, otherUser);
+        database
                 .child("users")
                 .child(currentUser)
                 .child("sent")
@@ -161,12 +179,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
                 .setValue(emoji);
     }
 
-    /**
-     * @param postRef
-     * @param currentUser
-     */
-    private void onReceiveEmoji(DatabaseReference postRef, String currentUser, String otherUser, String emoji, String timestamp) {
-        postRef
+    private void onReceiveEmoji(DatabaseReference database, String currentUser, String otherUser, String emoji, String timestamp) {
+
+        database
                 .child("users")
                 .child(otherUser)
                 .child("received")
@@ -178,29 +193,67 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     /**
      * Gets the device token
      */
-    public String getToken(DatabaseReference postRef, String currentUser) {
-        final String[] token = {""};
-        postRef
-                .child("users")
-                .child(currentUser)
-                .runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                        User u = mutableData.getValue(User.class);
-                        if (u == null) {
-                            return Transaction.success(mutableData);
-                        }
-                        token[0] = u.deviceToken;
-                        return Transaction.success(mutableData);
-                    }
+    public String getToken(DatabaseReference database, String user) {
 
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "postTransaction:onComplete: " + databaseError);
+        final String[] value = new String[1];
+        value[0] = null;
+
+        Query query = database.child("users").child(user).orderByKey();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("TOKEN FROM FB", snapshot.getKey());
+                    if (snapshot.getKey().equalsIgnoreCase("deviceToken")) {
+                        value[0] = snapshot.getValue().toString();
                     }
-                });
-        return token[0];
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Error while reading data");
+            }
+        });
+
+        return value[0];
     }
+
+    /**
+     * Get the emojis for a user
+     */
+    public List<String> getEmojisForUser(DatabaseReference database, String user) {
+
+        List emojiList = new LinkedList();
+
+        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.e("SNAPSHOT IS", snapshot.getKey());
+                    if (snapshot.getKey().equalsIgnoreCase("received")) {
+                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
+                            if (snapshot.getKey() != null) {
+                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
+                                    Log.e("ADDING", message.getValue().toString());
+                                    emojiList.add(message.getValue().toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Error while reading data");
+            }
+        });
+
+        return emojiList;
+    }
+
 
 }
