@@ -29,9 +29,11 @@ public class ReceivedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_received);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        try {
+            init(savedInstanceState);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         //FloatingActionButton fab = findViewById(R.id.fab);
         //fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,8 +74,8 @@ public class ReceivedActivity extends AppCompatActivity {
         }
         // Load the initial cards
         else {
-            StickerCard item1 = new StickerCard(R.drawable.common_google_signin_btn_icon_light);
-            StickerCard item2 = new StickerCard(R.drawable.common_google_signin_btn_icon_light);
+            StickerCard item1 = new StickerCard(R.drawable.smiley_face);
+            StickerCard item2 = new StickerCard(R.drawable.laughing_face);
             //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
             cardList.add(item1);
             cardList.add(item2);
@@ -85,14 +87,16 @@ public class ReceivedActivity extends AppCompatActivity {
     private void createRecyclerView() {
 
         layout = new LinearLayoutManager(this);
-        rView = findViewById(R.id.recycler_view);
+        rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
+
         stickerAdapter = new StickerAdapter(cardList);
         rView.setAdapter(stickerAdapter);
         rView.setLayoutManager(layout);
 
     }
     private int addItem(int position) {
+
         cardList.add(position, new StickerCard(R.drawable.common_google_signin_btn_icon_light));
         //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
 
