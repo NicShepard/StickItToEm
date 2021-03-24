@@ -17,7 +17,6 @@
 <!--            android:name=".SentHistoryActivity"-->
 <!--            android:label="@string/title_activity_sent_history"-->
 <!--            android:theme="@style/Theme.StickItToEm.NoActionBar" />-->
-        <activity android:name=".EmojiView" />
         <activity android:name=".RealTimeDatabaseActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

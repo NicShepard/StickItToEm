@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -38,10 +40,10 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private DatabaseReference database;
     private TextView userName;
     private EditText sendToFriend;
-    private ImageButton starEmoji;
-    private ImageButton crossEmoji;
-    private ImageButton plusEmoji;
-    private ImageButton lockEmoji;
+    private ImageView smileEmoji;
+    private ImageView sadEmoji;
+    private ImageView laughEmoji;
+    private ImageView angryEmoji;
 
 
     @Override
@@ -54,15 +56,15 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         database = FirebaseDatabase.getInstance().getReference();
 
-        starEmoji = (ImageButton) findViewById(R.id.star);
-        crossEmoji = (ImageButton) findViewById(R.id.cross);
-        plusEmoji = (ImageButton) findViewById(R.id.plus);
-        lockEmoji = (ImageButton) findViewById(R.id.lock);
+        smileEmoji = (ImageView) findViewById(R.id.smiley);
+        sadEmoji = (ImageView) findViewById(R.id.sad);
+        laughEmoji = (ImageView) findViewById(R.id.plus);
+        angryEmoji = (ImageView) findViewById(R.id.lock);
 
-        starEmoji.setOnClickListener(this::onClick);
-        crossEmoji.setOnClickListener(this::onClick);
-        plusEmoji.setOnClickListener(this::onClick);
-        lockEmoji.setOnClickListener(this::onClick);
+        smileEmoji.setOnClickListener(this::onClick);
+        sadEmoji.setOnClickListener(this::onClick);
+        laughEmoji.setOnClickListener(this::onClick);
+        angryEmoji.setOnClickListener(this::onClick);
 
         // Either add new user if the username entered is not in the database
         // or update device token if different than the one stored with the
@@ -115,29 +117,32 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         String timestamp = String.valueOf(new Date().getTime());
 
         switch (view.getId()) {
+            case R.id.received:
+                startActivity(new Intent(getApplicationContext(), ReceivedActivity.class));
+                break;
             // emoji 1
-            case R.id.star:
+            case R.id.smiley:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "smiley", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "smiley", timestamp);
                 break;
             // emoji 2
-            case R.id.cross:
+            case R.id.laughing:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "laughing", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "laughing", timestamp);
                 break;
             // emoji 3
-            case R.id.plus:
+            case R.id.sad:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "sad", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "sad", timestamp);
                 break;
             // emoji 4
-            case R.id.lock:
+            case R.id.angry:
                 // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "angry", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "angry", timestamp);
                 break;
         }
     }

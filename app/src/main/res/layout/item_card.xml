@@ -26,10 +26,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:adjustViewBounds="false"
-            android:contentDescription="Android Icon"
+            android:contentDescription="sticker_icon"
             android:padding="3dp"
-            android:src="@drawable/ic_launcher_background" />
-
+            android:src="@drawable/neutral_face" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -19,17 +19,77 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.127" />
 
-    <ImageButton
-        android:id="@+id/star"
+    <ImageView
+        android:id="@+id/angry"
         android:layout_width="93dp"
         android:layout_height="77dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="44dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="sticker_icon"
+        android:onClick="onClick"
+        android:padding="3dp"
+        android:src="@drawable/angry_face"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.685"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619"
-        app:srcCompat="@android:drawable/star_big_on" />
+        app:layout_constraintTop_toBottomOf="@+id/laughing"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/sad"
+        android:layout_width="93dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="44dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="sticker_icon"
+        android:onClick="onClick"
+        android:padding="3dp"
+        android:src="@drawable/sad_face"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smiley"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/laughing"
+        android:layout_width="93dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="76dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="sticker_icon"
+        android:onClick="onClick"
+        android:padding="3dp"
+        android:src="@drawable/laughing_face"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.685"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendToUser"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/smiley"
+        android:layout_width="93dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="76dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="sticker_icon"
+        android:onClick="onClick"
+        android:padding="3dp"
+        android:src="@drawable/smiley_face"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendToUser"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/cross"
@@ -37,10 +97,10 @@
         android:layout_height="77dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.685"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.432"
+        app:layout_constraintVertical_bias="0.944"
         app:srcCompat="@android:drawable/ic_delete" />
 
     <ImageButton
@@ -49,10 +109,10 @@
         android:layout_height="77dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintHorizontal_bias="0.198"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.432"
+        app:layout_constraintVertical_bias="0.944"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <ImageButton
@@ -61,10 +121,10 @@
         android:layout_height="77dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintHorizontal_bias="0.556"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619"
+        app:layout_constraintVertical_bias="0.944"
         app:srcCompat="@android:drawable/ic_lock_lock" />
 
     <EditText
@@ -84,12 +144,13 @@
         android:id="@+id/received"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="20dp"
         android:text="Stickers For Me"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/lock"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lock" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.773" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
