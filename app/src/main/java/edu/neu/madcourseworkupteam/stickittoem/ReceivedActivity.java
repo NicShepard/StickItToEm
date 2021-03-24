@@ -45,7 +45,21 @@ public class ReceivedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_received);
         database = FirebaseDatabase.getInstance().getReference();
         currentUser = getIntent().getStringExtra("CURRENT_USER");
-        getEmojisForUser(database, currentUser);
+        createRecyclerView();
+
+        List<String> emojis = getEmojisForUser(database, currentUser);
+
+        for(String each : emojis) {
+            if (each.equalsIgnoreCase("smiley")) {
+                cardList.add(new StickerCard(R.drawable.smiley_face));
+            } else if (each == "laughing") {
+                cardList.add(new StickerCard(R.drawable.laughing_face));
+            } else if (each == "angry") {
+                cardList.add(new StickerCard(R.drawable.angry_face));
+            } else if (each == "sad") {
+                cardList.add(new StickerCard(R.drawable.sad_face));
+            }
+        }
 
 
         //FloatingActionButton fab = findViewById(R.id.fab);
@@ -58,22 +72,7 @@ public class ReceivedActivity extends AppCompatActivity {
        // });
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
 
-        int size = cardList == null ? 0 : cardList.size();
-        outState.putInt(NUMBER_OF_ITEMS, size);
-
-        for (int i = 0; i < size; i++) {
-            outState.putInt(KEY_OF_INSTANCE + i + "0", cardList.get(i).getImageSource());
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    private void init(Bundle savedInstanceState) throws MalformedURLException {
-        initialItemData(savedInstanceState);
-        createRecyclerView();
-    }
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
             if (cardList == null || cardList.size() == 0) {
