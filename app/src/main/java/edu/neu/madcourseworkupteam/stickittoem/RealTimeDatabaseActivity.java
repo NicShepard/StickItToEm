@@ -41,6 +41,7 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
     private DatabaseReference database;
     private TextView userName;
     private EditText sendToFriend;
+    private String otherUser = "otherUser";
     private ImageView smileEmoji;
     private ImageView sadEmoji;
     private ImageView laughEmoji;
@@ -57,14 +58,14 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         setContentView(R.layout.activity_real_time_database);
 
         userName = (TextView) findViewById(R.id.username);
-        sendToFriend = (EditText) findViewById(R.id.sendToUser);
 
         database = FirebaseDatabase.getInstance().getReference();
 
         smileEmoji = (ImageView) findViewById(R.id.smiley);
         sadEmoji = (ImageView) findViewById(R.id.sad);
-        laughEmoji = (ImageView) findViewById(R.id.plus);
-        angryEmoji = (ImageView) findViewById(R.id.lock);
+        laughEmoji = (ImageView) findViewById(R.id.laughing);
+        angryEmoji = (ImageView) findViewById(R.id.angry);
+        sendToFriend = (EditText) findViewById(R.id.sendToUser);
 
         smileEmoji.setOnClickListener(this::onClick);
         sadEmoji.setOnClickListener(this::onClick);
@@ -136,7 +137,9 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
 
         switch (view.getId()) {
             case R.id.received:
-                startActivity(new Intent(getApplicationContext(), ReceivedActivity.class));
+                Intent intent = new Intent(getApplicationContext(), ReceivedActivity.class);
+                intent.putExtra("CURRENT_USER", userName.getText().toString());
+                startActivity(intent);
                 break;
             // emoji 1
 

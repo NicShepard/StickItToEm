@@ -28,17 +28,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fa40742-d437-48d5-81c5-818575759262" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/EmojiView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/RealTimeDatabaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/RealTimeDatabaseActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/ReceivedActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/ReceivedActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/StickerCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/StickerCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/StickerViewHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/edu/neu/madcourseworkupteam/stickittoem/StickerViewHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/sentEmojis.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_emoji_view.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_real_time_database.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_real_time_database.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_received.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_received.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_card.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_card.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,22 +215,22 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2660" y="275" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616542237856" />
-    <state width="1874" height="358" key="GridCell.Tab.0.bottom" timestamp="1616541241180">
+    <state width="1874" height="424" key="GridCell.Tab.0.bottom" timestamp="1616549748219">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1874" height="358" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616541241180" />
-    <state width="1874" height="358" key="GridCell.Tab.0.center" timestamp="1616541241180">
+    <state width="1874" height="424" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616549748219" />
+    <state width="1874" height="424" key="GridCell.Tab.0.center" timestamp="1616549748219">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1874" height="358" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616541241180" />
-    <state width="1874" height="358" key="GridCell.Tab.0.left" timestamp="1616541241179">
+    <state width="1874" height="424" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616549748219" />
+    <state width="1874" height="424" key="GridCell.Tab.0.left" timestamp="1616549748219">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1874" height="358" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616541241179" />
-    <state width="1874" height="358" key="GridCell.Tab.0.right" timestamp="1616541241180">
+    <state width="1874" height="424" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616549748219" />
+    <state width="1874" height="424" key="GridCell.Tab.0.right" timestamp="1616549748219">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state width="1874" height="358" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616541241180" />
+    <state width="1874" height="424" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616549748219" />
     <state width="1876" height="281" key="GridCell.Tab.1.bottom" timestamp="1616525995163">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -243,6 +247,10 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1876" height="281" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616525995163" />
+    <state x="2381" y="165" key="SettingsEditor" timestamp="1616548049014">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2381" y="165" key="SettingsEditor/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1616548049014" />
     <state x="2582" y="329" key="com.android.tools.idea.run.deployment.ModifyDeviceSetDialog" timestamp="1616524332525">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
