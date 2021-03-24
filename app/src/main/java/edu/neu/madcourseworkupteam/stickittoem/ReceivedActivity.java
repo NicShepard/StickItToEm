@@ -44,8 +44,9 @@ public class ReceivedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_received);
         database = FirebaseDatabase.getInstance().getReference();
-
         currentUser = getIntent().getStringExtra("CURRENT_USER");
+        getEmojisForUser(database, currentUser);
+
 
         //FloatingActionButton fab = findViewById(R.id.fab);
         //fab.setOnClickListener(new View.OnClickListener() {
