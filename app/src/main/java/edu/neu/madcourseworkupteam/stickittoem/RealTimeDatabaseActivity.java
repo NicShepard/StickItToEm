@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class is where the user sends emojis to a single friend. The architecture, and our design, supports sending
@@ -129,25 +131,23 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         switch (view.getId()) {
             // emoji 1
             case R.id.star:
-                // TODO: figure out how to get current user id
-                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
-                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                getEmojisForUser(database, currentUser);
+
+//                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+//                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
             case R.id.cross:
-                // TODO: figure out how to get current user id
                 RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "cross", timestamp);
                 break;
             // emoji 3
             case R.id.plus:
-                // TODO: figure out how to get current user id
                 RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "plus", timestamp);
                 break;
             // emoji 4
             case R.id.lock:
-                // TODO: figure out how to get current user id
                 RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
                 RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "lock", timestamp);
                 break;
@@ -213,6 +213,41 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         });
 
         return value[0];
+    }
+
+    /**
+     * Get the emojis for a user
+     */
+    public List<String> getEmojisForUser(DatabaseReference database, String user) {
+
+        List emojiList = new LinkedList();
+
+        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.e("SNAPSHOT IS", snapshot.getKey());
+                    if (snapshot.getKey().equalsIgnoreCase("received")) {
+                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
+                            if (snapshot.getKey() != null) {
+                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
+                                    Log.e("ADDING", message.getValue().toString());
+                                    emojiList.add(message.getValue().toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Error while reading data");
+            }
+        });
+
+        return emojiList;
     }
 
 

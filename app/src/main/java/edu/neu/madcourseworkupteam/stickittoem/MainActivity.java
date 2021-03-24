@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Get token
                 token = instanceIdResult.getToken();
-                Log.e("Token", token);
+                Log.d("Token", token);
                 Toast.makeText(MainActivity.this, "Here is your device token- share it with your friends so they can message you! " + token, Toast.LENGTH_LONG).show();
 
                 //Get views
