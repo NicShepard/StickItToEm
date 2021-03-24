@@ -67,6 +67,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
         plusEmoji.setOnClickListener(this::onClick);
         lockEmoji.setOnClickListener(this::onClick);
 
+        //We originally made this adjustable, but we'll hardcode it for now.
+        sendToFriend.setText("otherUser");
 
         String token = "";
         try {
@@ -132,9 +134,8 @@ public class RealTimeDatabaseActivity extends AppCompatActivity implements View.
             // emoji 1
             case R.id.star:
                 getEmojisForUser(database, currentUser);
-
-//                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
-//                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                RealTimeDatabaseActivity.this.onSendEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
+                RealTimeDatabaseActivity.this.onReceiveEmoji(database, userName.getText().toString(), sendToFriend.getText().toString(), "star", timestamp);
                 break;
             // emoji 2
             case R.id.cross:

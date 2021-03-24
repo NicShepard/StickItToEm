@@ -28,38 +28,21 @@ import android.widget.EditText;
  */
 public class MainActivity extends AppCompatActivity {
 
-    String token;
     private Button go_button;
+    TextView currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Get views
+        go_button = (Button) findViewById(R.id.RTDB);
+        currentUser = findViewById(R.id.UserName);
+    }
 
-        //Get the token and show it in a toast
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                setContentView(R.layout.activity_main);
-
-                //Get token
-                token = instanceIdResult.getToken();
-                Log.d("Token", token);
-                Toast.makeText(MainActivity.this, "Here is your device token- share it with your friends so they can message you! " + token, Toast.LENGTH_LONG).show();
-
-                //Get views
-                go_button = (Button) findViewById(R.id.RTDB);
-                TextView currentUser = findViewById(R.id.UserName);
-
-                //Carry the name of the user into the second screen
-                go_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), RealTimeDatabaseActivity.class);
-                        intent.putExtra("CURRENT_USER", currentUser.getText().toString());
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
+    public void goToRTDBActivity(View view) {
+        //Carry the name of the user into the second screen
+        Intent intent = new Intent(getApplicationContext(), RealTimeDatabaseActivity.class);
+        intent.putExtra("CURRENT_USER", currentUser.getText().toString());
+        startActivity(intent);
     }
 }
